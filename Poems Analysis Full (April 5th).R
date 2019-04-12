@@ -13,9 +13,7 @@ theme_set(theme_bw())
 
 #Importing and Cleaning the Data
 
-poems_raw <- read.csv("~/poems.csv", stringsAsFactors = FALSE) %>%
-  separate(country, c("grade", "country"), sep = ",") %>%
-  na.omit()
+poems_raw <- read_csv("https://raw.githubusercontent.com/whipson/Childrens_Poems/master/childrens_poem_raw.csv")
 
 poems_raw$id <- str_remove(poems_raw$id, "\\{id: ")
 
@@ -32,8 +30,6 @@ poems_raw$text <- gsub("\\,", ", ", poems_raw$text)
 poems_raw$text <- gsub("?", "", poems_raw$text)
 
 poems_raw$author <- str_replace(poems_raw$author, "By ", "")
-
-poems_raw$author <- str_replace(poems_raw$author, " ", "")
 
 poems_raw$author <- str_sub(poems_raw$author, 1, str_length(poems_raw$author)-3)
 
@@ -557,6 +553,7 @@ library(mgcv)
 
 tidy_poems_gen5 <- tidy_poems_full %>%
   filter(!is.na(gender),
+         gender != "Ambiguous",
          total_words > 4)
 
 gam_val5 <- gam(valence ~ s(grade, bs = 'cr') + total_words, family = gaussian, data = tidy_poems_5)
