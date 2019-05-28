@@ -71,31 +71,6 @@ t.test(sadness ~ gender, data = gender_t, var.equal = TRUE)
 
 t.test(joy ~ gender, data = gender_t, var.equal = TRUE)
 
-#Gender differences in words
-
-words_prop_gender <- words_emotion %>%
-  inner_join(gender_new) %>%
-  filter(gender %in% c("Male", "Female")) %>%
-  group_by(gender) %>%
-  mutate(total = n()) %>%
-  group_by(word, gender) %>%
-  mutate(n = n(),
-         prop = n / total) %>%
-  select(word, gender, prop) %>%
-  distinct(.) %>%
-  ungroup() %>%
-  spread(gender, prop, convert = TRUE) %>%
-  mutate(Female = ifelse(is.na(Female), 0, Female),
-         Male = ifelse(is.na(Male), 0, Male)) %>%
-  mutate(diff = Male - Female,
-         Male = scales::percent(Male),
-         Female = scales::percent(Female))
-
-words_prop_gender %>%
-  arrange(desc(abs(diff))) %>%
-  inner_join(valence) %>%
-  inner_join(arousal)
-
 #GAM Visuals
 
 library(reshape2)
@@ -137,10 +112,10 @@ poems_5_melt %>%
                                               "4", "5", "6",
                                               "7", "8", "9",
                                               "10", "11", "12")) +
-  scale_color_manual(values = c("#0000CD", "#FF0000", "#00CD00", "#FF7F00")) +
+  scale_color_manual(values = c("#FF0000", "#FF7F00", "#0000CD", "#00CD00")) +
   scale_shape_manual(values = c(15, 16, 17, 18)) +
-  labs(x = "Grade", y = NULL, color = "", shape = "") +
-  theme_bw(base_size = 26)
+  labs(x = "Grade", y = "Intensity", color = "", shape = "") +
+  theme_bw(base_size = 24)
 
 #Trends by Gender
 
@@ -212,7 +187,7 @@ library(mgcv)
 val5 <- gam(valence ~ s(grade, bs = 'cr') + total_words, data = poems_5)
 summary(val5)
 
-val_gen5 <- gam(valence ~ s(grade, bs = 'cr') + 
+val_gen5 <- gam(valence ~  
                   s(grade, by = factor(gender), bs = 'cr') + 
                   total_words, data = poems_gen_5)
 summary(val_gen5)
@@ -220,7 +195,7 @@ summary(val_gen5)
 aro5 <- gam(arousal ~ s(grade, bs = 'cr') + total_words, data = poems_5)
 summary(aro5)
 
-aro_gen5 <- gam(arousal ~ s(grade, bs = 'cr') + 
+aro_gen5 <- gam(arousal ~
                   s(grade, by = factor(gender), bs = 'cr') +
                   total_words, data = poems_gen_5)
 summary(aro_gen5)
@@ -228,7 +203,7 @@ summary(aro_gen5)
 dom5 <- gam(dominance ~ s(grade, bs = 'cr') + total_words, data = poems_5)
 summary(dom5)
 
-dom_gen5 <- gam(dominance ~ s(grade, bs = 'cr') +
+dom_gen5 <- gam(dominance ~ 
                   s(grade, by = factor(gender), bs = 'cr') +
                   total_words, data = poems_gen_5)
 summary(dom_gen5)
@@ -247,7 +222,7 @@ gam.check(dom_gen5)
 anger5 <- gam(anger ~ s(grade, bs = 'cr') + total_words, data = poems_5)
 summary(anger5)
 
-anger_gen5 <- gam(anger ~ s(grade, bs = 'cr') + 
+anger_gen5 <- gam(anger ~  
                     s(grade, by = factor(gender), bs = 'cr') + 
                     total_words, data = poems_gen_5)
 summary(anger_gen5)
@@ -255,7 +230,7 @@ summary(anger_gen5)
 fear5 <- gam(fear ~ s(grade, bs = 'cr') + total_words, data = poems_5)
 summary(fear5)
 
-fear_gen5 <- gam(fear ~ s(grade, bs = 'cr') + 
+fear_gen5 <- gam(fear ~  
                    s(grade, by = factor(gender), bs = 'cr') + 
                    total_words, data = poems_gen_5)
 summary(fear_gen5)
@@ -263,7 +238,7 @@ summary(fear_gen5)
 sadness5 <- gam(sadness ~ s(grade, bs = 'cr') + total_words, data = poems_5)
 summary(sadness5)
 
-sadness_gen5 <- gam(sadness ~ s(grade, bs = 'cr') + 
+sadness_gen5 <- gam(sadness ~
                       s(grade, by = factor(gender), bs = 'cr') + 
                       total_words, data = poems_gen_5)
 summary(sadness_gen5)
@@ -271,7 +246,7 @@ summary(sadness_gen5)
 joy5 <- gam(joy ~ s(grade, bs = 'cr') + total_words, data = poems_5)
 summary(joy5)
 
-joy_gen5 <- gam(joy ~ s(grade, bs = 'cr') + 
+joy_gen5 <- gam(joy ~  
                   s(grade, by = factor(gender), bs = 'cr') + 
                   total_words, data = poems_gen_5)
 summary(joy_gen5)
@@ -432,7 +407,7 @@ poems_gen_melt25 %>%
 val25 <- gam(valence ~ s(grade, bs = 'cr') + total_words, data = poems_25)
 summary(val25)
 
-val_gen25 <- gam(valence ~ s(grade, bs = 'cr') + 
+val_gen25 <- gam(valence ~  
                    s(grade, by = factor(gender), bs = 'cr') + 
                    total_words, data = poems_gen_25)
 summary(val_gen25)
@@ -440,7 +415,7 @@ summary(val_gen25)
 aro25 <- gam(arousal ~ s(grade, bs = 'cr') + total_words, data = poems_25)
 summary(aro25)
 
-aro_gen25 <- gam(arousal ~ s(grade, bs = 'cr') + 
+aro_gen25 <- gam(arousal ~  
                    s(grade, by = factor(gender), bs = 'cr') +
                    total_words, data = poems_gen_25)
 summary(aro_gen25)
@@ -449,7 +424,7 @@ dom25 <- gam(dominance ~ s(grade, bs = 'cr') + total_words, data = poems_25)
 
 summary(dom25)
 
-dom_gen25 <- gam(dominance ~ s(grade, bs = 'cr') +
+dom_gen25 <- gam(dominance ~ 
                    s(grade, by = factor(gender), bs = 'cr') +
                    total_words, data = poems_gen_25)
 summary(dom_gen25)
@@ -468,7 +443,7 @@ gam.check(dom_gen25)
 anger25 <- gam(anger ~ s(grade, bs = 'cr') + total_words, data = poems_25)
 summary(anger25)
 
-anger_gen25 <- gam(anger ~ s(grade, bs = 'cr') + 
+anger_gen25 <- gam(anger ~  
                      s(grade, by = factor(gender), bs = 'cr') + 
                      total_words, data = poems_gen_25)
 summary(anger_gen25)
@@ -476,7 +451,7 @@ summary(anger_gen25)
 fear25 <- gam(fear ~ s(grade, bs = 'cr') + total_words, data = poems_25)
 summary(fear25)
 
-fear_gen25 <- gam(fear ~ s(grade, bs = 'cr') + 
+fear_gen25 <- gam(fear ~ 
                     s(grade, by = factor(gender), bs = 'cr') + 
                     total_words, data = poems_gen_25)
 summary(fear_gen25)
@@ -484,7 +459,7 @@ summary(fear_gen25)
 sadness25 <- gam(sadness ~ s(grade, bs = 'cr') + total_words, data = poems_25)
 summary(sadness25)
 
-sadness_gen25 <- gam(sadness ~ s(grade, bs = 'cr') + 
+sadness_gen25 <- gam(sadness ~ 
                        s(grade, by = factor(gender), bs = 'cr') + 
                        total_words, data = poems_gen_25)
 summary(sadness_gen25)
@@ -492,7 +467,7 @@ summary(sadness_gen25)
 joy25 <- gam(joy ~ s(grade, bs = 'cr') + total_words, data = poems_25)
 summary(joy25)
 
-joy_gen25 <- gam(sadness ~ s(joy, bs = 'cr') + 
+joy_gen25 <- gam(joy ~  
                    s(grade, by = factor(gender), bs = 'cr') + 
                    total_words, data = poems_gen_25)
 summary(joy_gen25)
