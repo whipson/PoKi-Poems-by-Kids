@@ -1,7 +1,3 @@
-#Text pre-processing of raw poems. Please cite: 
-
-#Hipson, W. E., & Mohammad, S. M. (2019). Computational Analysis of Child and Adolescent Poetry.
-
 library(tidyverse)
 library(stringr)
 library(dplyr)
@@ -359,7 +355,7 @@ joy_hi <- plots %>%
   scale_fill_gradient2(low = "#FF6600", mid = "#8C8C8C", high = "#0000ff", limits = c(-.0003, .0002), na.value = "#0000FF") +
   scale_y_continuous(labels = scales::percent_format()) +
   coord_flip() +
-  geom_text(aes(label = round(joy, 2)), position = position_stack(vjust = .5), size = 4, color = "white") +
+  geom_text(aes(label = round(joy, 2)), position = position_nudge(y = .0005), size = 4.5, color = "black") +
   theme_bw(base_size = 16) +
   theme(legend.position = "none",
         axis.text.y = element_text(size = 16),

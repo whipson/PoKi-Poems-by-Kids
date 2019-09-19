@@ -1,5 +1,3 @@
-#Analysis of poems in Hipson, W. E., & Mohammad, S. M. (2019). Computational Analysis of Child and Adolescent Poetry.
-
 library(tidyverse)
 
 poems_full <- read_csv("https://raw.githubusercontent.com/whipson/Childrens_Poems/master/poems_full.csv")
@@ -147,6 +145,7 @@ poems_gen_melt %>%
   stat_summary(fun.data = mean_cl_normal, size = .8) +
   geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs")) +
   scale_color_manual(values = c("#0033FF", "#FF6600")) +
+  scale_shape_manual(values = c(16, 15)) +
   scale_x_discrete(name = "Grade", limits = c("1", "2", "3",
                                               "4", "5", "6",
                                               "7", "8", "9",
@@ -168,6 +167,7 @@ poems_gen_melt %>%
   stat_summary(fun.data = mean_cl_normal, size = .8) +
   geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs")) +
   scale_color_manual(values = c("#0033FF", "#FF6600")) +
+  scale_shape_manual(values = c(16, 15)) +
   scale_x_discrete(name = "Grade", limits = c("1", "2", "3",
                                               "4", "5", "6",
                                               "7", "8", "9",
@@ -319,6 +319,18 @@ poems_25_melt <- poems_25 %>%
          Joy = joy) %>%
   melt(id.vars = "grade")
 
+poems_gen_melt25 <- poems_gen_25 %>%
+  select(id, grade, total_words, gender, valence, arousal, dominance,
+         anger, fear, sadness, joy) %>%
+  rename(Valence = valence,
+         Arousal = arousal,
+         Dominance = dominance,
+         Anger = anger,
+         Fear = fear,
+         Sadness = sadness,
+         Joy = joy) %>%
+  melt(id.vars = c("id", "grade", "total_words", "gender"))
+
 #VAD
 
 poems_25_melt %>%
@@ -343,6 +355,7 @@ poems_gen_melt25 %>%
   stat_summary(fun.data = mean_cl_normal, size = .8) +
   geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs")) +
   scale_color_manual(values = c("#0033FF", "#FF6600")) +
+  scale_shape_manual(values = c(16, 15)) +
   scale_x_discrete(name = "Grade", limits = c("1", "2", "3",
                                               "4", "5", "6",
                                               "7", "8", "9",
@@ -355,18 +368,6 @@ poems_gen_melt25 %>%
 
 #EIL
 
-poems_gen_melt25 <- poems_gen_25 %>%
-  select(id, grade, total_words, gender, valence, arousal, dominance,
-         anger, fear, sadness, joy) %>%
-  rename(Valence = valence,
-         Arousal = arousal,
-         Dominance = dominance,
-         Anger = anger,
-         Fear = fear,
-         Sadness = sadness,
-         Joy = joy) %>%
-  melt(id.vars = c("id", "grade", "total_words", "gender"))
-
 poems_25_melt %>%
   filter(variable %in% c("Anger", "Fear", "Sadness", "Joy")) %>%
   ggplot(aes(grade, value, color = variable, shape = variable)) +
@@ -376,7 +377,7 @@ poems_25_melt %>%
                                               "4", "5", "6",
                                               "7", "8", "9",
                                               "10", "11", "12")) +
-  scale_color_manual(values = c("#0000CD", "#FF0000", "#00CD00", "#FF7F00")) +
+  scale_color_manual(values = c("#FF0000", "#FF7F00", "#0000CD", "#00CD00")) +
   scale_shape_manual(values = c(15, 16, 17, 18)) +
   labs(x = "Grade", y = NULL, color = "", shape = "") +
   facet_wrap(~variable) +
@@ -391,6 +392,7 @@ poems_gen_melt25 %>%
   stat_summary(fun.data = mean_cl_normal, size = .8) +
   geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs")) +
   scale_color_manual(values = c("#0033FF", "#FF6600")) +
+  scale_shape_manual(values = c(16, 15)) +
   scale_x_discrete(name = "Grade", limits = c("1", "2", "3",
                                               "4", "5", "6",
                                               "7", "8", "9",
