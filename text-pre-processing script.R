@@ -4,7 +4,7 @@ library(dplyr)
 
 #Importing and Cleaning the Data
 
-poems_raw <- read_csv("https://raw.githubusercontent.com/whipson/Childrens_Poems/master/childrens_poem_raw.csv")
+poems_raw <- read_csv("childrens_poem_raw.csv")
 
 poems_raw$id <- str_remove(poems_raw$id, "\\{id: ")
 
