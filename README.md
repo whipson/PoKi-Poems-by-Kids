@@ -43,7 +43,7 @@ Dataset #1: poki
 Description: Dataset containing the raw web-scraped poems from http://teacher.scholastic.com/writewit/poetry/jack_readall.asp. No text pre-processing at this point.
 
 Variables:
-id = unique identifier for each poem;
+id = unique identifier for each poem;  
 title = title of poem (submitted by poem author);
 author = first name of author;
 grade = school grade (1-12);
