@@ -35,7 +35,6 @@ The table below provides a brief glimpse of how the poems in PoKi are distribute
 | 10 | 1171  | 91.8  |
 | 11 | 667  | 103.0  |
 | 12  | 1656  | 97.2  |
-| ------------- | ------------- | ------------- | 
 | All  | 61330  | 50.3  |
 
 ## Dataset Descriptions
