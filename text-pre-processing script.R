@@ -1,49 +1,23 @@
 library(tidyverse)
 library(stringr)
-library(dplyr)
+library(tidytext)
+library(ggpubr)
+library(formattable)
 
-#Importing and Cleaning the Data
+### Pre-Processing ###
 
-poems_raw <- read_csv("childrens_poem_raw.csv")
+# Read in local copy of poki. 
 
-poems_raw$id <- str_remove(poems_raw$id, "\\{id: ")
-
-poems_raw$grade <- gsub("country: Grade ", "", poems_raw$grade)
-
-poems_raw$grade <- as.numeric(poems_raw$grade)
-
-poems_raw$text <- tolower(poems_raw$text)
-
-poems_raw$text <- gsub("\\.", ". ", poems_raw$text)
-
-poems_raw$text <- gsub("\\,", ", ", poems_raw$text)
-
-poems_raw$text <- gsub("?", "", poems_raw$text)
-
-poems_raw$author <- str_replace(poems_raw$author, "By ", "")
-
-poems_raw$author <- str_sub(poems_raw$author, 1, str_length(poems_raw$author)-3)
-
-poems_raw$author <- tolower(poems_raw$author)
-
-poems <- as_tibble(poems_raw)
-
-#Removing Template Poems
-
-strings <- c("awoke one morning, a stork was on my head",
-             "awoke one morning a stork was on my head",
-             "i eat pickles",
-             "i eat pickles")
-
-poems <- poems %>%
-  filter(!str_detect(poems$text, paste(strings, collapse = "|")))
+poki <- read_csv("poki.csv")
 
 #Tokenization
 
-library(tidytext)
-
-words_total <- poems %>%
+words_total <- poki %>%
   unnest_tokens(word, text)
+
+non_english <- words_total[which(grepl("[^\x01-\x7F]+", words_total$word)),]
+
+non_english$word <- gsub("â", "", non_english$word)
 
 #Stop words and Gender Data
 
@@ -137,8 +111,7 @@ poems_full <- words_emotion %>%
   select(-c(male, female, conf_female)) %>%
   transmute_all(funs(ifelse(is.nan(.), NA, .)))
 
-#Running all the code above produces poems_full.csv 
-#(https://raw.githubusercontent.com/whipson/Childrens_Poems/master/poems_full.csv)
+write_csv(poems_full, "poki-analysis.csv")
 
 #Additional Analyses
 
@@ -363,8 +336,6 @@ joy_hi <- plots %>%
 
 joy_hi
 
-library(ggpubr)
-
 VAD_plot <- ggarrange(hi_val, lo_val, hi_aro, lo_aro, hi_dom, lo_dom,
           labels = c("A", "B", "C", "D", "E", "F"),
           ncol = 2, nrow = 3)
@@ -376,8 +347,6 @@ EI_plot <- ggarrange(anger_hi, sadness_hi, fear_hi, joy_hi,
           ncol = 2, nrow = 2)
 
 EI_plot
-
-library(formattable)
 
 sample_poem <- words_emotion %>%
   filter(id == 99545) %>%

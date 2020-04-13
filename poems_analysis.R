@@ -1,18 +1,8 @@
 library(tidyverse)
+library(psych)
+library(reshape2)
 
-poems_full <- read_csv("https://raw.githubusercontent.com/whipson/Childrens_Poems/master/poems_full.csv")
-
-#Descriptives
-
-#How many distinct words are there?
-
-words_nonstop %>%
-  select(word) %>%
-  n_distinct()
-
-words_emotion %>%
-  select(word) %>%
-  n_distinct()
+poems_full <- read_csv("poki-analysis.csv")
 
 #Excluding poems with fewer than 5 words
 
@@ -22,22 +12,14 @@ poems_5 <- poems_full %>%
 #What scores are associated with 95% of the sample?
 
 quantile(poems_5$valence, probs = c(.025, .975))
-
 quantile(poems_5$arousal, probs = c(.025, .975))
-
 quantile(poems_5$dominance, probs = c(.025, .975))
-
 quantile(poems_5$anger, probs = c(.025, .975), na.rm = TRUE)
-
 quantile(poems_5$fear, probs = c(.025, .975), na.rm = TRUE)
-
 quantile(poems_5$sadness, probs = c(.025, .975), na.rm = TRUE)
-
 quantile(poems_5$joy, probs = c(.025, .975), na.rm = TRUE)
 
 #Descriptive Statistics
-
-library(psych)
 
 describe(poems_5)
 
@@ -47,31 +29,7 @@ poems_5 %>%
   select(valence, arousal, dominance) %>%
   corr.test()
 
-#T-tests
-
-gender_t <- poems_5 %>%
-  filter(total_words >= 5,
-         gender %in% c("Male", "Female"))
-
-describeBy(poems_5, "gender")
-
-t.test(valence ~ gender, data = gender_t, var.equal = TRUE)
-
-t.test(arousal ~ gender, data = gender_t, var.equal = TRUE)
-
-t.test(dominance ~ gender, data = gender_t, var.equal = TRUE)
-
-t.test(anger ~ gender, data = gender_t, var.equal = TRUE)
-
-t.test(fear ~ gender, data = gender_t, var.equal = TRUE)
-
-t.test(sadness ~ gender, data = gender_t, var.equal = TRUE)
-
-t.test(joy ~ gender, data = gender_t, var.equal = TRUE)
-
 #GAM Visuals
-
-library(reshape2)
 
 poems_5_melt <- poems_5 %>%
   select(grade, valence, arousal, dominance, anger, fear, sadness, joy) %>%
@@ -86,26 +44,30 @@ poems_5_melt <- poems_5 %>%
 
 #VAD
 
-poems_5_melt %>%
+p1 <- poems_5_melt %>%
   filter(variable %in% c("Valence", "Arousal", "Dominance")) %>%
-  ggplot(aes(grade, value)) +
+  ggplot(aes(grade, value, group = variable)) +
   stat_summary(fun.data = mean_cl_normal, size = .8) +
-  geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs")) +
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cr")) +
   scale_x_discrete(name = "Grade", limits = c("1", "2", "3",
                                               "4", "5", "6",
                                               "7", "8", "9",
                                               "10", "11", "12")) +
   labs(x = "Grade", y = NULL, color = "", shape = "") +
   facet_wrap(~ variable, scales = "free_y") +
-  theme_bw(base_size = 26)
+  theme_minimal(base_size = 18)
+
+p1
+
+ggsave("p1.png", p1, width = 12.5, height = 6)
 
 #EIL
 
-poems_5_melt %>%
+p3 <- poems_5_melt %>%
   filter(variable %in% c("Anger", "Fear", "Sadness", "Joy")) %>%
   ggplot(aes(grade, value, color = variable, shape = variable)) +
   stat_summary(fun.data = mean_cl_normal, size = .8) +
-  geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs")) +
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cr")) +
   scale_x_discrete(name = "Grade", limits = c("1", "2", "3",
                                               "4", "5", "6",
                                               "7", "8", "9",
@@ -113,7 +75,12 @@ poems_5_melt %>%
   scale_color_manual(values = c("#FF0000", "#FF7F00", "#0000CD", "#00CD00")) +
   scale_shape_manual(values = c(15, 16, 17, 18)) +
   labs(x = "Grade", y = "Intensity", color = "", shape = "") +
-  theme_bw(base_size = 24)
+  theme_bw(base_size = 24) +
+  theme_minimal(base_size = 18)
+
+p3
+
+ggsave("p3.png", p3)
 
 #Trends by Gender
 
@@ -136,7 +103,7 @@ poems_gen_melt <- poems_gen_5 %>%
 
 #VAD
 
-poems_gen_melt %>%
+p2 <- poems_gen_melt %>%
   filter(!is.na(gender),
          gender != "Ambiguous",
          total_words >= 5,
@@ -152,20 +119,24 @@ poems_gen_melt %>%
                                               "10", "11", "12")) +
   labs(x = "Grade", y = NULL, color = "", shape = "") +
   facet_wrap(~variable, scales = "free_y") +
-  theme_bw(base_size = 26) +
+  theme_minimal(base_size = 18) +
   theme(plot.title = element_text(hjust = 0.5),
-        legend.justification = c(1, 1), legend.position = c(.99, .35))
+        legend.position = "bottom")
+
+p2
+
+ggsave("p2.png", p2, width = 12.5, height = 6)
 
 #EIL
 
-poems_gen_melt %>%
+p4 <- poems_gen_melt %>%
   filter(!is.na(gender),
          gender != "Ambiguous",
          total_words >= 5,
          variable %in% c("Anger", "Fear", "Sadness", "Joy")) %>%
   ggplot(aes(grade, value, group = gender, color = gender, shape = gender)) +
   stat_summary(fun.data = mean_cl_normal, size = .8) +
-  geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cs")) +
+  geom_smooth(method = 'gam', formula = y ~ s(x, bs = "cr")) +
   scale_color_manual(values = c("#0033FF", "#FF6600")) +
   scale_shape_manual(values = c(16, 15)) +
   scale_x_discrete(name = "Grade", limits = c("1", "2", "3",
@@ -174,9 +145,14 @@ poems_gen_melt %>%
                                               "10", "11", "12")) +
   labs(x = "Grade", y = NULL, color = "", shape = "") +
   facet_wrap(~variable) +
-  theme_bw(base_size = 26) +
+  theme_minimal(base_size = 18) +
   theme(plot.title = element_text(hjust = 0.5),
-        legend.justification = c(1, 1), legend.position = c(.99, .25))
+        legend.box.spacing = unit(.1, 'cm'),
+        legend.position = "bottom")
+
+p4
+
+ggsave("p4.png", p4, height = 6)
 
 #GAMS
 
