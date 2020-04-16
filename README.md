@@ -55,7 +55,7 @@ char = number of characters
 
 Dataset #2: poki-analysis
 
-Description: Clean, processed version of Children's Poems Corpus ready for analysis.  
+Description: Clean, processed version of PoKi ready for analysis.  
 
 Variables:  
 id = unique identifier for each poem  
