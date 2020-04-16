@@ -7,13 +7,13 @@ domain host prior to scraping. Poems were webscraped on June, 2018 from http://t
 This repository includes two versions of PoKi and R analytic scripts for reproducing the results.
 
 Details of the data are in this paper:  
-PoKi: A Large Dataset of Poems by Children. Will E. Hipson, Saif M. Mohammad. arXiv preprint arXiv: . April 2020.
+PoKi: A Large Dataset of Poems by Children. Will E. Hipson, Saif M. Mohammad. arXiv preprint arXiv:2004.06188 . April 2020.
 
 BibTex:  
 @article{hipson2020poki,  
   title={PoKi: A Large Dataset of Poems by Children},  
   author={Hipson, W. E and Mohammad, S M.},  
-  journal={arXiv preprint arXiv:arXiv:2004.06188},  
+  journal={arXiv preprint arXiv:2004.06188},  
   year={2020}  
 }
 
