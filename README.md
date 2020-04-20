@@ -1,5 +1,5 @@
 # PoKi: A Large Dataset of Poems by Children
-PoKi is a corpus of over 61,330 thousand poems written by children from grades 1 to 12. PoKi is especially useful in studying child language because it comes with information about the age of the child authors (their grade). PoKi is made freely available for research with the condition that the research be used for the benefit of children. Anyone who uses PoKi must cite this paper https://arxiv.org/abs/2004.06188 (see BibTex below for full citation).
+PoKi is a corpus of over 61,330 thousand poems written by children from grades 1 to 12. PoKi is especially useful in studying child language because it comes with information about the age of the child authors (their grade). 
 
 Poems were submitted online by children in school grades 1-12. Permissions were obtained from
 domain host prior to scraping. Poems were webscraped on June, 2018 from http://teacher.scholastic.com/writewit/poetry/jack_readall.asp.
@@ -16,6 +16,10 @@ BibTex:
   journal={arXiv preprint arXiv:2004.06188},  
   year={2020}  
 }
+
+## Terms of Use
+
+PoKi is made freely available for research with the condition that the research be used for the benefit of children. Anyone who uses PoKi must cite this paper https://arxiv.org/abs/2004.06188 (see BibTex below for full citation). Should you intend to use PoKi in your research, please reach out to us (william.hipson@carleton.ca); we'd love to hear how you're using it!
 
 ## Overview of PoKi
 
