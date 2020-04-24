@@ -4,7 +4,7 @@ PoKi is a corpus of over 61,330 thousand poems written by children from grades 1
 Poems were submitted online by children in school grades 1-12. Permissions were obtained from
 domain host prior to scraping. Poems were webscraped on June, 2018 from http://teacher.scholastic.com/writewit/poetry/jack_readall.asp.
 
-This repository includes two versions of PoKi and R analytic scripts for reproducing the results.
+This repository includes three versions of PoKi and R analytic scripts for reproducing the results.
 
 Details of the data are in this paper:  
 PoKi: A Large Dataset of Poems by Children. Will E. Hipson, Saif M. Mohammad. arXiv preprint arXiv:2004.06188 . April 2020.
@@ -43,23 +43,25 @@ The table below provides a brief glimpse of how the poems in PoKi are distribute
 
 ## Dataset Descriptions
 
-Dataset #1: poki
+### poki.csv
 
-Description: Dataset containing the raw web-scraped poems from http://teacher.scholastic.com/writewit/poetry/jack_readall.asp. No text pre-processing at this point.
+Description: Dataset containing the raw web-scraped poems from http://teacher.scholastic.com/writewit/poetry/jack_readall.asp. No text pre-processing at this point. Note that there may be a few extra poems beyond the number reported in the manuscript as some poems contain very little text and are eventually removed during the preprocessing steps.
 
 Variables:  
 id = unique identifier for each poem  
 title = title of poem (submitted by poem author)  
 author = first name of author  
 grade = school grade (1-12)  
-country = state or country of author  
-text = poem text  
+text = raw poem text  
 char = number of characters  
 
+### poki-lem.csv
 
-Dataset #2: poki-analysis
+Description: Lemmatized version of PoKi. We used lemmatization tools in the Natural Language Toolkit (http://www.nltk.org/) to lemmatize poem text (e.g., running, ran -> run | writing, wrote -> write). This dataset contains the same columns as in poki.csv, where 'text' now contains lemmatized text.
 
-Description: Clean, processed version of PoKi ready for analysis.  
+### poki-analysis.csv
+
+Description: Data used for word-level analysis reported in Hipson and Mohammad (2020) PoKi: A Large Dataset of Poems by Children. We use the NRC VAD lexicon and the NRC Emotion Intensity lexicon.
 
 Variables:  
 id = unique identifier for each poem  
