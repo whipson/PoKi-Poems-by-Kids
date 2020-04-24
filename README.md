@@ -57,7 +57,7 @@ char = number of characters
 
 ### poki-lem.csv
 
-Description: Lemmatized version of PoKi. We used lemmatization tools in the Natural Language Toolkit (http://www.nltk.org/) to lemmatize poem text (e.g., running, ran -> run | writing, wrote -> write). This dataset contains the same columns as in poki.csv, where 'text' now contains lemmatized text.
+Description: Lemmatized version of PoKi. We used lemmatization tools in the Natural Language Toolkit (http://www.nltk.org/) to lemmatize poem text (e.g., running, ran, runs -> run | writing, wrote, writes -> write). This dataset contains the same columns as in poki.csv, where 'text' now contains lemmatized text.
 
 ### poki-analysis.csv
 
