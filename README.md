@@ -19,7 +19,7 @@ BibTex:
 
 ## Terms of Use
 
-PoKi is made freely available for research with the condition that the research be used for the benefit of children. Anyone who uses PoKi must cite this paper https://arxiv.org/abs/2004.06188 (see BibTex below for full citation). Should you intend to use PoKi in your research, please reach out to us (william.hipson@carleton.ca); we'd love to hear how you're using it!
+PoKi is made freely available for research with the condition that the research be used for the benefit of children. Anyone who uses PoKi must cite this paper https://arxiv.org/abs/2004.06188 (see BibTex below for full citation). Should you intend to use PoKi in your research, please reach out to us (will.e.hipson@gmail.com); we'd love to hear how you're using it!
 
 ## Overview of PoKi
 
